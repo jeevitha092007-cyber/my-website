@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Receptionist Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- LOGIN PROTECTION -->
+<script>
+if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+</script>
+
+<style>
+body {
+    font-family: "Segoe UI", sans-serif;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+        url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3");
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+}
+
+/* Sidebar */
+.sidebar {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar a {
+    background: #fff;
+    padding: 18px;
+    text-decoration: none;
+    color: #000;
+    border-radius: 12px;
+    font-size: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.1);
+    transition: .3s;
+}
+
+.sidebar a:hover {
+    background: #0b5ed7;
+    color: #fff;
+}
+
+.sidebar a.logout {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* Main */
+.main {
+    flex: 1;
+}
+
+.header {
+    background: rgba(255,255,255,0.75);
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 26px;
+    font-weight: bold;
+    color: #0b5ed7;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    padding: 25px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.75);
+    box-shadow: 0 8px 20px rgba(0,0,0,.1);
+    text-align: center;
+    font-weight: bold;
+}
+
+.card p {
+    font-size: 40px;
+    margin-top: 10px;
+}
+
+.blue { color: #0b5ed7; }
+.green { color: #198754; }
+.orange { color: #fd7e14; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="sidebar">
+        <a href="register.html">➕ Register Patient</a>
+        <a href="queue.html">📋 View Queue</a>
+        <a href="serve.html">▶ Serve Patient</a>
+        <a href="discharge.html">✔ Discharge Patient</a>
+        <a href="about.html">ℹ About</a>
+        <a href="logout.html" class="logout">🚪 Logout</a>
+    </div>
+
+    <div class="main">
+        <div class="header">🏥 Hospital Queue Management System</div>
+
+        <div class="stats">
+            <div class="card blue">
+                Total Patients Today
+                <p id="totalPatients">0</p>
+            </div>
+
+            <div class="card green">
+                Patients Waiting
+                <p id="patientsWaiting">0</p>
+            </div>
+
+         <a href="doctors.html" style="text-decoration: none;">
+    <div class="card orange" style="cursor: pointer;">
+        Doctors Available
+        <p>6</p>
+    </div>
+</a>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- DASHBOARD LOGIC -->
+<script>
+function getTodayStats() {
+    const today = new Date().toISOString().split("T")[0];
+    let stats = JSON.parse(localStorage.getItem("todayStats"));
+
+    if (!stats || stats.date !== today) {
+        stats = { date: today, total: 0 };
+        localStorage.setItem("todayStats", JSON.stringify(stats));
+    }
+    return stats;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    let queue = JSON.parse(localStorage.getItem("queue")) || [];
+    let stats = getTodayStats();
+
+    // Total patients today (retained even after serve/discharge)
+    document.getElementById("totalPatients").innerText = stats.total;
+
+    // Patients currently waiting
+    document.getElementById("patientsWaiting").innerText = queue.length;
+
+});
+</script>
+
+</body>
+</html>
