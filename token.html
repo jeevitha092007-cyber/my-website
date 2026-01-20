@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Generated</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(rgba(240,248,255,.95), rgba(240,248,255,.95)),
+                url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3");
+    background-size: cover;
+    margin: 0;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard {
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    text-align: center;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.success {
+    font-size: 60px;
+    color: #198754;
+}
+
+h1 {
+    color: #0b5ed7;
+    margin-bottom: 10px;
+}
+
+.token-box {
+    margin: 25px 0;
+    padding: 18px;
+    background: #f0f6ff;
+    border: 2px dashed #0b5ed7;
+    border-radius: 14px;
+}
+
+.token-box p {
+    margin: 0;
+    color: #555;
+}
+
+.token-box h2 {
+    margin: 5px 0 0;
+    font-size: 38px;
+    color: #0b5ed7;
+}
+
+.actions a {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 22px;
+    background: #0b5ed7;
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.actions a.secondary {
+    background: #6c757d;
+}
+
+.actions a:hover {
+    opacity: 0.9;
+}
+
+.emergency {
+    margin-top: 25px;
+    background: #dc3545;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="dashboard">
+        <div class="success">✅</div>
+        <h1>Registration Successful</h1>
+        <p>Please keep your token safe</p>
+
+        <div class="token-box">
+            <p>Your Token Number</p>
+            <h2 id="tokenNumber">--</h2>
+        </div>
+
+        <div class="actions">
+            <a href="queue.html">View Queue</a>
+            <a href="register.html" class="secondary">New Registration</a>
+        </div>
+
+        <div class="emergency">
+            🚨 Emergency? Call <strong>108 / 112</strong><br>
+            Contact Reception Immediately
+        </div>
+    </div>
+</div>
+
+<!-- Beep sound -->
+<audio id="beep">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Display last token
+const token = localStorage.getItem("lastToken");
+document.getElementById("tokenNumber").innerText = token || "N/A";
+
+// Play beep on page load
+window.addEventListener("load", () => {
+    const beep = document.getElementById("beep");
+    beep.play().catch(() => {
+        console.log("Autoplay blocked – user interaction required");
+    });
+});
+
+// Optional: auto print token slip
+window.addEventListener("load", () => {
+    const printWindow = window.open('', '', 'height=400,width=400');
+    printWindow.document.write('<html><head><title>Token Slip</title></head><body>');
+    printWindow.document.write('<h2>Hospital Token Slip</h2>');
+    printWindow.document.write('<p><strong>Token:</strong> ' + (token || '-') + '</p>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+});
+</script>
+
+</body>
+</html>

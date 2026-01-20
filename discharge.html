@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Discharge Patient</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: "Segoe UI", sans-serif; background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3"); background-size: cover; background-position: center; margin:0; padding:30px;}
+.container { max-width:1000px; margin:auto; background: rgba(255,255,255,0.9); padding:20px; border-radius:15px;}
+h1 { text-align:center; color:#0b5ed7; margin-bottom:25px;}
+table { width:100%; border-collapse: collapse; margin-bottom:20px;}
+th,td { border:1px solid #999; padding:10px; text-align:center;}
+th { background-color:#0b5ed7; color:#fff;}
+button { padding:8px 15px; background-color:#198754; color:#fff; border:none; border-radius:8px; cursor:pointer; transition:.3s;}
+button:hover { background-color:#0a6b3c;}
+.no-patients { text-align:center; font-size:18px; color:#dc3545; margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>Discharge Patient</h1>
+<table id="dischargeTable">
+<thead>
+<tr><th>#</th><th>Patient Name</th><th>Age</th><th>Department</th><th>Type</th><th>Action</th></tr>
+</thead>
+<tbody></tbody>
+</table>
+<div class="no-patients" id="noPatientsMsg">No patients to discharge.</div>
+</div>
+
+<script>
+function loadPatients(){
+    const queue = JSON.parse(localStorage.getItem('queue')) || [];
+    const tbody = document.querySelector("#dischargeTable tbody");
+    const noPatientsMsg = document.getElementById('noPatientsMsg');
+    tbody.innerHTML = '';
+
+    if(queue.length===0){ noPatientsMsg.style.display='block'; return; }
+    else noPatientsMsg.style.display='none';
+
+    queue.forEach((p,index)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${index+1}</td>
+            <td>${p.name}</td>
+            <td>${p.age}</td>
+            <td>${p.department}</td>
+            <td>${p.type}</td>
+            <td><button onclick="dischargePatient(${index})">Discharge</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function dischargePatient(index){
+    const queue = JSON.parse(localStorage.getItem('queue')) || [];
+    const dischargedPatient = queue.splice(index,1)[0];
+    localStorage.setItem('queue', JSON.stringify(queue));
+    alert(`${dischargedPatient.name} has been discharged!`);
+    loadPatients();
+}
+
+loadPatients();
+</script>
+
+</body>
+</html>
