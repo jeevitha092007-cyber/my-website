@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading...</title>
+<style>
+/* Full-screen blue background */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* prevents scroll during loader */
+    background: linear-gradient(135deg, #007BFF, #00A0FF);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+}
+
+/* Fade-out effect */
+.fade-out {
+    opacity: 0;
+}
+
+/* Loader container */
+.loader-container {
+    text-align: center;
+    color: white;
+}
+
+/* Spinning circle */
+.loader-circle {
+    width: 120px;
+    height: 120px;
+    border: 10px solid rgba(255, 255, 255, 0.3);
+    border-top: 10px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    position: relative;
+}
+
+/* Centered stethoscope image */
+.loader-circle img {
+    width: 100px;  /* adjust size as needed */
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Loading text */
+.loader-text {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Spin animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .loader-circle {
+        width: 80px;
+        height: 80px;
+        border-width: 8px;
+    }
+    .loader-circle img {
+        width: 40px;
+        height: 40px;
+    }
+    .loader-text {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="loader-container">
+    <div class="loader-circle">
+        <!-- Replace 'stethoscope.png' with your image -->
+        <img src="stethoscope.png" alt="Stethoscope">
+    </div>
+    <div class="loader-text">Loading Hospital Dashboard...</div>
+</div>
+
+<script>
+// Wait 3 seconds then fade out and redirect
+setTimeout(() => {
+    document.body.classList.add('fade-out');
+    // Wait for fade-out transition to finish
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 1000); // match the CSS transition duration
+}, 3000);
+</script>
+</body>
+</html>
